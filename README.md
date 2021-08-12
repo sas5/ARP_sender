@@ -8,5 +8,6 @@ The ARP Scan Tool shows all active devices even if they have firewalls. Devices 
 
 # How it Works ?
 
-Just click run.bat .
-then choose your interface
+Just click run.bat
+
+then choose your adapter
