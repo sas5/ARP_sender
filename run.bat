@@ -37,6 +37,7 @@ call :INFO
 mkdir "%temp%/arp" > nul 2>&1
 timeout /t 1 > nul
 call :CreateCR
+set /A "i=0"
 start /b %~nx0 scan
 
 :check
@@ -66,8 +67,9 @@ start /b %~nx0 scan
 :scan
     set /A i=i+1
     START /B CMD /C CALL "arpS.exe" %Myip% %range%%i% > "%temp%/arp/%i%.arp"
-    set /p="%ESC%[93m SCANNING: %ESC%[91m%range%%ESC%[92m%i%  %ESC%[0m!alignspace:~,6!Time: [%ESC%[95m!TIME!%ESC%[0m]!CR!" < nul
+    set /p="%ESC%[93m SCANNING: %ESC%[91m%range%%ESC%[92m%i%  %ESC%[0m!alignspace:~,6!Time: [%ESC%[95m!TIME!%ESC%[0m ]!CR!" < nul
     if %i%==254 type nul>Done.tmp & pause > nul & exit  
+    ping localhost -n 1 -w 500 > nul
     goto :scan
 
 :Help 
