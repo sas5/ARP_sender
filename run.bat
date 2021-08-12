@@ -42,19 +42,21 @@ start /b %~nx0 scan
 
 :check
     if exist Done.tmp (
-        echo.
+        echo.!\n! --^> Done...
         timeout /t 4 > nul
         FOR /R "%temp%/arp" %%a IN (*.arp) DO type %%a >> arp.list
         del /Q /F "%temp%/arp"
         del /Q /F Done.tmp
         set /A "i=0"
-        echo.!\n!%ESC%[36m___________^(Current Devices in this Network^)__________________%ESC%[0m!\n!!\n!
+        echo.!\n!!\n!!\n!%ESC%[33mCurrent Devices in this Network:%ESC%[0m
+        echo.!\n!%ESC%[31;4;107m  #      IP                         Mac             HostName%ESC%[0m!\n!
         FOR /F "tokens=1,2* delims=-" %%a in (arp.list) do (
             set /A "i+=1"
-            echo [ %ESC%[33m!i!!alignspace:~,3!%ESC%[0m]  %ESC%[93m%%a!alignspace:~,4! %ESC%[0m- [%ESC%[32m%%b%ESC%[0m ]
+            for /F "tokens=2" %%c in ('nslookup "%%a" 2^>nul ^| findstr Name') do set "hostname=%%c"
+            if "!hostname!" == "" set "hostname=Unknown"
+            echo [ %ESC%[33m!i!!alignspace:~,3!%ESC%[0m]  %ESC%[93m%%a!alignspace:~,5! %ESC%[0m- [%ESC%[32m%%b%ESC%[0m ] - %ESC%[94m!hostname!%ESC%[0m
         )
-
-        echo.!\n!______________________________________________________________!\n!!\n!
+        echo.!\n!
         echo %ESC%[36mAll This Data Will Be Saved To [arp.list] In Same Path%ESC%[0m
         echo %ESC%[31mClick Enter 2 Times To Exit%ESC%[0m
         endlocal
@@ -102,9 +104,9 @@ start /b %~nx0 scan
                     if "!i!"=="%~1" (
                         set "_ip=%%~b"
                         set "Niface=!G!"
-                        echo.______________________________________________________________
+                        echo.%ESC%[4m..............................................................%ESC%[0m
                         call :GET_INFO
-                        echo.______________________________________________________________
+                        echo.%ESC%[4m..............................................................%ESC%[0m
                         echo.
                         exit /b
                     )
