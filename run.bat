@@ -31,7 +31,7 @@ for /F "tokens=1,2 delims=:" %%a IN ('ipconfig') do (
     )
 )
 set "_choice="
-echo !\n!Choose on of these adabpters [1-!i!]:
+echo !\n!Choose one of these adabpters [1-!i!]:
 set /p "_choice=-> "
 call :INFO
 mkdir "%temp%/arp" > nul 2>&1
